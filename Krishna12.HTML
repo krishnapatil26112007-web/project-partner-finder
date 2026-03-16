@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Partner Finder | Collaborative Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0077ff;
+            --secondary: #00d2ff;
+            --accent: #ffcc00;
+            --dark: #1a1a1a;
+            --glass-dark: rgba(0, 0, 0, 0.75);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Views */
+        .view { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; flex-direction: column; }
+        .active { display: flex; animation: fadeIn 0.5s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        /* --- FIRST PAGE STYLING (The fix) --- */
+        .hero-box {
+            background: var(--glass-dark);
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            max-width: 700px;
+            margin: 20px;
+        }
+
+        .hero-box h1 {
+            font-size: 3.5rem;
+            color: #ffffff;
+            line-height: 1.1;
+            margin-bottom: 15px;
+        }
+
+        /* Color change for the Project Name */
+        .highlight {
+            background: linear-gradient(to right, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .hero-box p {
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        /* Forms */
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .input-group { text-align: left; margin-bottom: 15px; }
+        label { display: block; font-size: 0.8rem; font-weight: 600; color: #444; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; }
+
+        /* Buttons */
+        .btn { padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: 600; border: none; transition: 0.3s; text-decoration: none; }
+        .btn-primary { background: var(--primary); color: white; width: 100%; margin-top: 10px; }
+        .btn-outline { background: transparent; border: 2px solid var(--secondary); color: var(--secondary); margin: 10px; min-width: 140px; }
+        .btn-outline:hover { background: var(--secondary); color: white; }
+
+        /* Dashboard */
+        #dashboard-view { background: #f0f2f5; justify-content: flex-start; overflow-y: auto; }
+        .nav { width: 100%; padding: 20px 5%; background: white; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 40px; width: 100%; }
+        .partner-card { background: white; padding: 20px; border-radius: 15px; border-top: 4px solid var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        
+        .back-btn { margin-top: 15px; color: #666; cursor: pointer; display: inline-block; font-size: 0.9rem; }
+        .back-btn:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div id="index-view" class="view active">
+        <div class="hero-box">
+            <h1><span class="highlight">Project Partner</span> Finder</h1>
+            <p>Don't build alone. Connect with skilled students from your college and bring your ideas to life.</p>
+            <div>
+                <button class="btn btn-outline" onclick="showView('register-view')">Register</button>
+                <button class="btn btn-outline" onclick="showView('login-view')">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="login-view" class="view">
+        <div class="card">
+            <h2>Welcome Back</h2>
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" placeholder="example@mail.com">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" placeholder="••••••••">
+            </div>
+            <button class="btn btn-primary" onclick="showView('dashboard-view')">Sign In</button>
+            <div class="back-btn" onclick="showView('index-view')">← Back to Home</div>
+        </div>
+    </div>
+
+    <div id="register-view" class="view">
+        <div class="card">
+            <h2>Create Profile</h2>
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" placeholder="Your Name">
+            </div>
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" placeholder="name@college.edu">
+            </div>
+            <div class="input-group">
+                <label>Department</label>
+                <select id="user-dept">
+                    <option value="Computer">Computer</option>
+                    <option value="Civil">Civil</option>
+                    <option value="Mechanical">Mechanical</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="showView('dashboard-view')">Join Now</button>
+            <div class="back-btn" onclick="showView('index-view')">← Back to Home</div>
+        </div>
+    </div>
+
+    <div id="dashboard-view" class="view">
+        <div class="nav">
+            <h2 style="color: var(--primary)">Find Partners</h2>
+            <button class="btn btn-primary" style="width: auto;" onclick="showView('index-view')">Logout</button>
+        </div>
+        
+        <div style="padding: 20px; text-align: center;">
+            <p>Filter by Department:</p>
+            <button class="btn btn-outline" style="min-width: 100px; margin: 5px;" onclick="renderPartners('Computer')">Computer (5)</button>
+            <button class="btn btn-outline" style="min-width: 100px; margin: 5px;" onclick="renderPartners('Civil')">Civil (7)</button>
+            <button class="btn btn-outline" style="min-width: 100px; margin: 5px;" onclick="renderPartners('Mechanical')">Mechanical (3)</button>
+        </div>
+
+        <div id="list-container" class="container"></div>
+    </div>
+
+    <script>
+        const data = [
+            // COMPUTER (5 Names)
+            { name: "Krishna", dept: "Computer", skills: "React, CSS, HTML" },
+            { name: "Siddharth", dept: "Computer", skills: "Python, Django" },
+            { name: "Isha", dept: "Computer", skills: "Java, Android" },
+            { name: "Aryan", dept: "Computer", skills: "C++, Data Structures" },
+            { name: "Meera", dept: "Computer", skills: "UI/UX, Figma" },
+
+            // CIVIL (7 Names)
+            { name: "Trusha", dept: "Civil", skills: "AutoCAD, Surveying" },
+            { name: "Rahul", dept: "Civil", skills: "Structural Analysis" },
+            { name: "Pooja", dept: "Civil", skills: "Construction Mgmt" },
+            { name: "Amit", dept: "Civil", skills: "Concrete Tech" },
+            { name: "Suresh", dept: "Civil", skills: "Hydraulics" },
+            { name: "Neha", dept: "Civil", skills: "Transportation Eng" },
+            { name: "Vikas", dept: "Civil", skills: "Geotechnical Eng" },
+
+            // MECHANICAL (3 Names)
+            { name: "Jinal", dept: "Mechanical", skills: "SolidWorks, CAD" },
+            { name: "Kabir", dept: "Mechanical", skills: "Thermodynamics" },
+            { name: "Rohan", dept: "Mechanical", skills: "Robotics, Arduino" }
+        ];
+
+        function showView(id) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(id === 'dashboard-view') renderPartners('Computer'); // Default view
+        }
+
+        function renderPartners(filterDept) {
+            const container = document.getElementById('list-container');
+            container.innerHTML = '';
+            
+            const filtered = data.filter(p => p.dept === filterDept);
+            
+            filtered.forEach(p => {
+                container.innerHTML += `
+                    <div class="partner-card">
+                        <small style="color:var(--primary); font-weight:bold;">${p.dept}</small>
+                        <h3>${p.name}</h3>
+                        <p style="font-size:0.8rem; color:#555;">Skills: ${p.skills}</p>
+                        <button class="btn btn-primary" style="font-size:0.7rem; padding:8px;">Connect</button>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
